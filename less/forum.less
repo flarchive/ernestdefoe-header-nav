@@ -1,0 +1,192 @@
+// ── The forum's navigation, in the header ──────────────────────────────────
+//
+// 🚨 There is no nav container. Each link is its own item in HeaderPrimary, so
+// Flarum's OverflowingList shows what fits and puts the rest in its "..." menu
+// as ordinary labelled rows. A single wrapper collapsed as one blob.
+
+.Header-controls .HeaderNav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 11px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.92rem;
+  line-height: 1.2;
+  white-space: nowrap;
+  // 🚨 The header's own control colour, the CSS custom property Sign Up and
+  // Log In use, never `inherit`. A theme can paint the header dark without
+  // changing the text colour inside it; on ernestdefoe.online that drew these
+  // near-black on near-black while the buttons beside them stayed readable.
+  // (A LESS variable would be worse: @header-color does not exist, and an
+  // undefined variable in an extension's LESS 500s every page.)
+  color: var(--header-control-color);
+
+  &:hover,
+  &:focus {
+    // From the text colour, so the hover shows on a dark header as well.
+    // Escaped so LESS passes it through rather than trying to evaluate it.
+    background: ~"color-mix(in srgb, currentColor 12%, transparent)";
+    color: var(--header-control-color);
+    text-decoration: none;
+  }
+}
+
+/*
+ * 🚨 Icons only on a narrow desktop, so the links that matter stay on the row.
+ *
+ * Between the drawer and about 1100px the logo and the account controls leave
+ * room for one labelled link; on ernestdefoe.online at 900px only Discussions
+ * survived, and the knowledge base and tracker are what that forum is for.
+ * Without labels the first links fit as icons, each carrying its name as a
+ * title and an aria-label. The More menu keeps its labels: it has the room.
+ */
+@media (min-width: 768px) and (max-width: 1099.98px) {
+  .Header-controls > li > .HeaderNav-link {
+    padding: 7px 9px;
+
+    .HeaderNav-label {
+      display: none;
+    }
+
+    /*
+ * 🚨 The colour again, at a weight a theme's header-link rule cannot beat.
+ *
+ * Bespoke ships `:root:not([data-theme^="dark"]) .App-header a { color:
+ * inherit }` — three classes and an element — so in light mode it outranked
+ * the rule above and the links went back to near-black on ernestdefoe.online's
+ * dark header. Four classes settles it in every ordering; `!important` would
+ * also beat the site's own custom CSS, which should keep the last word.
+ */
+.App .App-header .Header-controls .HeaderNav-link {
+  &,
+  &:hover,
+  &:focus {
+    color: var(--header-control-color);
+  }
+}
+
+.HeaderNav-icon {
+      opacity: 1;
+      font-size: 1.05em;
+    }
+  }
+}
+
+.HeaderNav-icon {
+  font-size: 0.95em;
+  opacity: 0.75;
+}
+
+// In the overflow menu the links are rows, not pills.
+.Header-controls .Dropdown-menu .HeaderNav-link {
+  display: flex;
+  width: 100%;
+  border-radius: 0;
+  padding: 9px 15px;
+}
+
+/*
+ * 🚨 The logo is capped so the nav has room.
+ *
+ * At its natural size it rendered 406px wide and ate the space the navigation
+ * needs — which is why everything was overflowing into the menu in the first
+ * place.
+ *
+ * 🚨 The cap is on HEIGHT and the mark is wide, so every pixel here costs
+ * roughly three and a half of width.
+ *
+ * Measured on fbsfb, which carries NINE header links — not on the demo, which
+ * has five and showed 56px costing nothing at all. The real numbers, links
+ * visible in the bar:
+ *
+ *            1280   1100   1024    980    900
+ *     44px      6      5      4      4      3
+ *     56px      6      5      4      3      3
+ *     64px      5      4      4      3      2
+ *
+ * So 56px costs one link in a narrow band around 980px and nothing anywhere
+ * else, which is worth 27% more logo. 64px costs one at 1280 and 1100 — the
+ * widths most people are actually on — and is not worth it.
+ */
+.App-header .Header-logo {
+  max-height: 56px;
+}
+
+/*
+ * 🚨 767.98px, NOT 767px — Flarum's own mobile layout switches at the fraction.
+ *
+ * A rule at 767px leaves a 0.98px band where the drawer is in use and these
+ * overrides are not, and fractional viewport widths are routine on Android and
+ * with browser zoom. It reads as an intermittent glitch. This exact gap has
+ * caused this exact bug before, on another site.
+ */
+@media (max-width: 767.98px) {
+  /*
+   * 🚨 The logo's row takes the full drawer, so the controls wrap BELOW it.
+   *
+   * Measured at 390px: the drawer is 270px, the title block 165px, and the
+   * search, preferences, sign-up and log-in items were laid out beside it —
+   * running off the edge, with "System preference" clipped. The mark is wide,
+   * so it will always win that row; giving it the row outright is what stops
+   * it taking the menu with it.
+   */
+  /*
+   * 🚨 `width: 100%` alone does NOT do it. The title is a flex ITEM with the
+   * default `flex-shrink: 1`, so a 100% width is simply shrunk back to 165px to
+   * make room for the controls beside it — measured: the rule was in the served
+   * CSS, inside the right media query, and the computed width was still 165.
+   *
+   * The parent has to be allowed to wrap, and the title has to refuse to
+   * shrink. Both, or neither works.
+   */
+  .App-drawer .App-header > .container {
+    flex-wrap: wrap;
+  }
+
+  .App-drawer .Header-title {
+    flex: 0 0 100%;
+    width: 100%;
+  }
+
+  // Smaller too: on a phone the logo competes with the drawer button and the
+  // search icon rather than with the nav.
+  .App-header .Header-logo {
+    max-height: 40px;
+  }
+}
+
+/*
+ * 🚨 The visible pill row is BESPOKE's, not Flarum's.
+ *
+ * Flarum's own `.IndexPage-nav` measures 0x0 on this forum — the theme renders
+ * its own `.BespokeHeaderNav` instead. Hiding Flarum's nav therefore hid
+ * something nobody could see, while the real row carried on.
+ *
+ * Only the pills go. The same container also holds "Start a Discussion", which
+ * is the primary control on the page and has nothing to do with navigation.
+ */
+@media (min-width: 768px) {
+  // 🚨 Two classes, to beat Bespoke's own `.BespokeHeaderNav-pills{display:flex}`.
+  //
+  // Extension stylesheets are concatenated and Bespoke's lands AFTER this one,
+  // so at equal specificity its rule simply wins. A media query carries no
+  // extra priority — source order decides, which is the same thing that caught
+  // me on a grid-width rule earlier today.
+  .BespokeHeaderNav > .BespokeHeaderNav-pills {
+    display: none;
+  }
+}
+
+/*
+ * 🚨 On a phone the header links go and the pill row comes back.
+ *
+ * The header has room for a logo and two controls at 375px and nothing else.
+ * Flarum moves these into its drawer anyway, so hiding them here only stops
+ * them competing for a few pixels they were never going to win.
+ */
+@media (max-width: 767px) {
+  .Header-controls .HeaderNav-link {
+    display: none;
+  }
+}
