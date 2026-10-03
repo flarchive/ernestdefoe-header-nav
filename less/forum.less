@@ -1,0 +1,266 @@
+// ── The forum's navigation, in the header ──────────────────────────────────
+//
+// 🚨 There is no nav container. Each link is its own item in HeaderPrimary, so
+// Flarum's OverflowingList shows what fits and puts the rest in its "..." menu
+// as ordinary labelled rows. A single wrapper collapsed as one blob.
+
+.Header-controls .HeaderNav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 11px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.92rem;
+  line-height: 1.2;
+  white-space: nowrap;
+  // 🚨 The header's own control colour, the CSS custom property Sign Up and
+  // Log In use, never `inherit`. A theme can paint the header dark without
+  // changing the text colour inside it; on ernestdefoe.online that drew these
+  // near-black on near-black while the buttons beside them stayed readable.
+  // (A LESS variable would be worse: @header-color does not exist, and an
+  // undefined variable in an extension's LESS 500s every page.)
+  color: var(--header-control-color);
+
+  &:hover,
+  &:focus {
+    // From the text colour, so the hover shows on a dark header as well.
+    // Escaped so LESS passes it through rather than trying to evaluate it.
+    background: ~"color-mix(in srgb, currentColor 12%, transparent)";
+    color: var(--header-control-color);
+    text-decoration: none;
+  }
+}
+
+/*
+ * 🚨 The colour again, at a weight a theme's header-link rule cannot beat.
+ *
+ * Bespoke ships `:root:not([data-theme^="dark"]) .App-header a { color:
+ * inherit }` — three classes and an element — so in light mode it outranked
+ * the rule above and the links went back to near-black on ernestdefoe.online's
+ * dark header. Four classes settles it in every ordering; `!important` would
+ * also beat the site's own custom CSS, which should keep the last word.
+ */
+.App .App-header .Header-controls .HeaderNav-link {
+  &,
+  &:hover,
+  &:focus {
+    color: var(--header-control-color);
+  }
+}
+
+/*
+ * 🚨 Icons only on a narrow desktop, so the links that matter stay on the row.
+ *
+ * Between the drawer and about 1100px the logo and the account controls leave
+ * room for one labelled link; on ernestdefoe.online at 900px only Discussions
+ * survived, and the knowledge base and tracker are what that forum is for.
+ * Without labels the first links fit as icons, each carrying its name as a
+ * title and an aria-label. The More menu keeps its labels: it has the room.
+ */
+@media (min-width: 768px) and (max-width: 1099.98px) {
+  .Header-controls > li > .HeaderNav-link {
+    padding: 7px 9px;
+
+    .HeaderNav-label {
+      display: none;
+    }
+
+    .HeaderNav-icon {
+      opacity: 1;
+      font-size: 1.05em;
+    }
+  }
+}
+
+.HeaderNav-icon {
+  font-size: 0.95em;
+  opacity: 0.75;
+}
+
+// In the overflow menu the links are rows, not pills.
+.Header-controls .Dropdown-menu .HeaderNav-link {
+  display: flex;
+  width: 100%;
+  border-radius: 0;
+  padding: 9px 15px;
+}
+
+/*
+ * 🚨 On a phone the header links are rows in Flarum's drawer.
+ *
+ * They used to be hidden here and the pill row was left to carry them. Now a
+ * link that is in the header is taken OUT of the menu, so hiding it on a phone
+ * would hide it everywhere: the drawer is where Flarum puts the header's items
+ * on a narrow screen, and that is where they belong.
+ */
+@media (max-width: 767.98px) {
+  .App-drawer .Header-controls .HeaderNav-link {
+    display: flex;
+    width: 100%;
+    border-radius: 0;
+    padding: 10px 15px;
+  }
+}
+
+// ── The editor (/header-nav) ────────────────────────────────────────────────
+.HeaderNavEditor {
+  max-width: 920px;
+  padding-top: 24px;
+  padding-bottom: 60px;
+
+  h1 {
+    margin: 0 0 6px;
+    font-size: 1.6rem;
+  }
+}
+
+.HeaderNavEditor-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  margin: 14px 0 18px;
+  font-size: 0.85rem;
+  color: var(--muted-color);
+}
+
+.HeaderNavEditor-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.HeaderNavEditor-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--control-bg);
+  border-radius: var(--border-radius);
+  background: var(--body-bg);
+
+  &.is-hidden .HeaderNavEditor-preview,
+  &.is-hidden .HeaderNavEditor-fields {
+    opacity: 0.55;
+  }
+
+  &.is-missing {
+    border-style: dashed;
+  }
+
+  // Sortable's placeholder while dragging.
+  &.sortable-ghost {
+    opacity: 0.4;
+  }
+}
+
+.HeaderNavEditor-handle {
+  flex: 0 0 auto;
+  padding: 8px 4px;
+  color: var(--muted-color);
+  cursor: grab;
+  touch-action: none;
+
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+.HeaderNavEditor-preview {
+  flex: 0 0 32px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: var(--primary-color);
+}
+
+.HeaderNavEditor-fields {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.HeaderNavEditor-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+
+  .FormControl {
+    flex: 1 1 180px;
+    min-width: 0;
+  }
+
+  .HeaderNavEditor-icon {
+    flex: 0 1 200px;
+  }
+
+  .FormControl.is-invalid {
+    border-color: #d83e3e;
+  }
+}
+
+.HeaderNavEditor-newTab {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  font-size: 0.9rem;
+}
+
+.HeaderNavEditor-note {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--muted-color);
+
+  // Its own red, never a theme alert colour: those can be white.
+  &.is-error {
+    color: #d83e3e;
+  }
+}
+
+.HeaderNavEditor-place {
+  flex: 0 0 auto;
+  display: inline-flex;
+}
+
+.HeaderNavEditor-remove {
+  flex: 0 0 auto;
+}
+
+.HeaderNavEditor-add {
+  margin: 12px 0 24px;
+}
+
+.HeaderNavEditor-direct .FormControl {
+  max-width: 100px;
+}
+
+.HeaderNavEditor-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.HeaderNavEditor-unsaved {
+  font-size: 0.85rem;
+  color: var(--muted-color);
+}
+
+// A phone: the placement buttons drop under the fields.
+@media (max-width: 767.98px) {
+  .HeaderNavEditor-row {
+    flex-wrap: wrap;
+  }
+
+  .HeaderNavEditor-place {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
