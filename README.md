@@ -2,24 +2,13 @@
 
 > **Read-only archive of released versions of ernestdefoe/header-nav.** Not for installation: use [Packagist](https://packagist.org/packages/ernestdefoe/header-nav) or the [upstream repository](https://github.com/ernestdefoe/header-nav).
 
-**17** versions archived · Latest: [`1.6.1`](https://github.com/flarchive/ernestdefoe-header-nav/tree/archive/v1.6.1) · License: `MIT` · Flarum: `^2.0`
+**0** versions archived · Latest: [`1.6.2`](https://github.com/flarchive/ernestdefoe-header-nav/tree/archive/v1.6.2) · License: `MIT` · Flarum: `^2.0`
 
 ## Archived Versions
 
 | Version | Released | Flarum | Source |
 |---|---|---|---|
-| `1.0.0` | 2026-10-01 | `^2.0` | [Browse](https://github.com/flarchive/ernestdefoe-header-nav/tree/archive/v1.0.0) |
-| `1.0.1` | 2026-10-01 | `^2.0` | [Browse](https://github.com/flarchive/ernestdefoe-header-nav/tree/archive/v1.0.1) |
-| `1.0.2` | 2026-10-01 | `^2.0` | [Browse](https://github.com/flarchive/ernestdefoe-header-nav/tree/archive/v1.0.2) |
-| `1.1.0` | 2026-10-01 | `^2.0` | [Browse](https://github.com/flarchive/ernestdefoe-header-nav/tree/archive/v1.1.0) |
-| `1.2.0` | 2026-10-01 | `^2.0` | [Browse](https://github.com/flarchive/ernestdefoe-header-nav/tree/archive/v1.2.0) |
-| `1.3.0` | 2026-10-01 | `^2.0` | [Browse](https://github.com/flarchive/ernestdefoe-header-nav/tree/archive/v1.3.0) |
-| `1.3.1` | 2026-10-01 | `^2.0` | [Browse](https://github.com/flarchive/ernestdefoe-header-nav/tree/archive/v1.3.1) |
-| `1.3.2` | 2026-10-01 | `^2.0` | [Browse](https://github.com/flarchive/ernestdefoe-header-nav/tree/archive/v1.3.2) |
-| `1.3.3` | 2026-10-01 | `^2.0` | [Browse](https://github.com/flarchive/ernestdefoe-header-nav/tree/archive/v1.3.3) |
-| `1.4.0` | 2026-10-02 | `^2.0` | [Browse](https://github.com/flarchive/ernestdefoe-header-nav/tree/archive/v1.4.0) |
-
-[View all 17 versions](https://github.com/flarchive/ernestdefoe-header-nav/tags)
+| — | — | — | — |
 
 Catalog entry: [packages/ernestdefoe-header-nav.json](https://github.com/flarchive/archive-index/blob/main/packages/ernestdefoe-header-nav.json)
 
